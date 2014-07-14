@@ -14,7 +14,9 @@
     :when (= :sites (:tag x))]
       (doseq [y (:content x)
         :when (= :site (:tag y))]
-        (println (first (:content y))))))
+          (doseq [z (:content y)
+            :when(= :name (:tag z))]
+              (println (first (:content z)))))))
 
 
 (parse-xml "resources/data/region2-legends.xml")
