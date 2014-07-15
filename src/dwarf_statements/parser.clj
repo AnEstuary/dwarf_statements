@@ -23,9 +23,13 @@
     :when (= :sites (:tag x))]
       (doseq [y (:content x)
         :when (= :site (:tag y))]
-          (doseq [z (:content y)
-            :when (= :name (:tag z))]
-            (conj! a-list (first (:content z))))))
+          (doseq [nimi   (:content y)
+                  tag    (:content y)
+                  coords (:content y)
+            :when (= :name   (:tag nimi))
+            :when (= :id     (:tag tag))
+            :when (= :coords (:tag coords))]
+            (conj! a-list (first (:content tag))))))
   (for[i (range (count a-list))]
     (a-list i)))
 
