@@ -29,7 +29,7 @@
             :when (= :name   (:tag nimi))
             :when (= :id     (:tag tag))
             :when (= :coords (:tag coords))]
-            (conj! a-list (first (:content tag))))))
+            (conj! a-list {:name (first (:content nimi)), :id (first (:content tag)), :coords (first (:content coords))}))))
   (for[i (range (count a-list))]
     (a-list i)))
 
