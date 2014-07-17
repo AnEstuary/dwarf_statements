@@ -36,14 +36,20 @@
 
 (defn sites->map [element]
   (let [z (xml-zip element)]
-      (xml1-> z)))
+      {:id (xml1-> z :id text)
+       :name (xml1-> z :name text)
+       :coords (xml1-> z :coords text)}))
 
 
 (with-open [rdr(clojure.java.io/reader "resources/data/region2-legends.xml")]
         (doall
-          (take 2
-             (->> (:content (parse rdr))
-             (filter #(= :sites (:tag %)))
+          (take 35
+             (->> rdr
+                  parse
+                  :content
+                  (filter #(= :sites (:tag %)))
+                  first
+                  :content
              (map sites->map)))))
 
 
