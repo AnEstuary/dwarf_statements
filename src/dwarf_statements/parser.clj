@@ -8,49 +8,41 @@
 (require '[clojure.walk :as w])
 
 
-
-; This let parses the xml file, reads the name of all sites in our XMLfile and puts them in a vector
-; The plan is to use the principles from this code to parse our data for xAPI
-
-
-
-;(defn xml-dwarf-site-parser
-; "This function parses information about sites from the given
-; dwarven XML file path and stores it on a list"
-;  [final-list file-path]
-;  (let [xml-file (clojure.java.io/reader file-path)]
-;    (doseq [x (xml-seq (parse xml-file :coalescing false))
-;      :when (= :sites (:tag x))]
-;        (doseq [y (:content x)
-;          :when (= :site (:tag y))]
-;          (doseq [nimi   (:content y)
-;                  tag    (:content y)
-;                  coords (:content y)
-;             :when (= :name (:tag nimi))
-;             :when (= :id    (:tag tag))
-;             :when (= :coords (:tag coords))]
-;            (conj! final-list {:name (first (:content nimi)), :id (first (:content tag)), :coords (first (:content coords))})
-;            )))))
-
-
-
 (defn sites->map [e]
   (let [z (xml-zip e)]
-      {:id (xml1-> z :id text)
-       :name (xml1-> z :name text)
-       :coords (xml1-> z :coords text)}))
+      {:id      (xml1-> z :id text)
+       :name    (xml1-> z :name text)
+       :coords  (xml1-> z :coords text)
+       }))
 
-(defn regions->map [e]
-  (let [z (xml-zip e)]
-    {:id (xml1-> :id text)
-     :name (xml1-> :name text)
-     :type (xml1-> :type text)
+(defn regions->map [x]
+  (let [z (xml-zip x)]
+    {:id   (xml1-> z :id text)
+     :name (xml1-> z :name text)
+     :type (xml1-> z :type text)
      }))
 
 (defn underground-regions->map [e]
   (let [z (xml-zip e)]
-    {:id    (xml1-> :id text)
-     :type (xml1-> :type text)}))
+    {:id    (xml1-> z :id text)
+     :type  (xml1-> z :type text)
+     :depth (xml1-> z :depth text)}))
+
+
+(defn historical-figures->map [e]
+  (let [z (xml-zip e)]
+    {:id              (xml1-> z :id text)
+     :race            (xml1-> z :race text)
+     :name            (xml1-> z :name text)
+     :caste           (xml1-> z :caste text)
+     :appeared        (xml1-> z :appeared text)
+     :birth_year      (xml1-> z :birth_year text)
+     :birth_seconds   (xml1-> z :birth_seconds text)
+     :death_year      (xml1-> z :death_year text)
+     :death_seconds   (xml1-> z :death_seconds text)
+     :associated_type (xml1-> z :associated_type text)
+     }))
+
 
 
 ;(with-open [rdr(clojure.java.io/reader "resources/data/region1-legends.xml")]
@@ -78,7 +70,9 @@
            :content
            (map coll)))))
 
+(parse-dwarf-xml "resources/data/region1-legends.xml" :regions regions->map)
 (parse-dwarf-xml "resources/data/region1-legends.xml" :sites sites->map )
+(parse-dwarf-xml "resources/data/region1-legends.xml" :underground_regions underground-regions->map)
 
 
 
