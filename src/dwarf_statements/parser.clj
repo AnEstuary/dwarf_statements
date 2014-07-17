@@ -41,16 +41,32 @@
        :coords (xml1-> z :coords text)}))
 
 
-(with-open [rdr(clojure.java.io/reader "resources/data/region2-legends.xml")]
-        (doall
-          (take 35
-             (->> rdr
-                  parse
-                  :content
-                  (filter #(= :sites (:tag %)))
-                  first
-                  :content
-             (map sites->map)))))
+(with-open [rdr(clojure.java.io/reader "resources/data/region1-legends.xml")]
+  (doall
+    (->> rdr
+      parse
+      :content
+      (filter #(= :sites (:tag %)))
+      first
+      :content
+      (map sites->map))))
+
+(defn parse-dwarf-xml
+  "This function takes the address of the file
+  you wish to parse, finds the tag of the items
+  you wish to collect, and maps it to collection coll"
+  [address tag coll]
+  (with-open [rdr(clojure.java.io/reader address)]
+    (doall
+      (->> rdr
+           parse
+           :content
+           (filter #(= tag (:tag %)))
+           first
+           :content
+           (map coll)))))
+
+(parse-dwarf-xml "resources/data/region1-legends.xml" :sites sites->map )
 
 
 
