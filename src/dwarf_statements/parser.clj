@@ -34,27 +34,39 @@
 
 
 
-(defn sites->map [element]
-  (let [z (xml-zip element)]
+(defn sites->map [e]
+  (let [z (xml-zip e)]
       {:id (xml1-> z :id text)
        :name (xml1-> z :name text)
        :coords (xml1-> z :coords text)}))
 
+(defn regions->map [e]
+  (let [z (xml-zip e)]
+    {:id (xml1-> :id text)
+     :name (xml1-> :name text)
+     :type (xml1-> :type text)
+     }))
 
-(with-open [rdr(clojure.java.io/reader "resources/data/region1-legends.xml")]
-  (doall
-    (->> rdr
-      parse
-      :content
-      (filter #(= :sites (:tag %)))
-      first
-      :content
-      (map sites->map))))
+(defn underground-regions->map [e]
+  (let [z (xml-zip e)]
+    {:id    (xml1-> :id text)
+     :type (xml1-> :type text)}))
+
+
+;(with-open [rdr(clojure.java.io/reader "resources/data/region1-legends.xml")]
+;  (doall
+;    (->> rdr
+;      parse
+;      :content
+;      (filter #(= :sites (:tag %)))
+;      first
+;      :content
+;      (map sites->map))))
 
 (defn parse-dwarf-xml
   "This function takes the address of the file
   you wish to parse, finds the tag of the items
-  you wish to collect, and maps it to collection coll"
+  you wish to collect, and maps the items to collection coll"
   [address tag coll]
   (with-open [rdr(clojure.java.io/reader address)]
     (doall
