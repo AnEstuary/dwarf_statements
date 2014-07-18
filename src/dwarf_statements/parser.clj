@@ -94,6 +94,6 @@
 (parse-dwarf-xml "resources/data/region2-legends.xml" :regions regions->map)
 (parse-dwarf-xml "resources/data/region2-legends.xml" :sites sites->map )
 (parse-dwarf-xml "resources/data/region2-legends.xml" :underground_regions underground-regions->map)
-(parse-dwarf-xml "resources/data/region2-legends.xml" :historical_figures historical-figures->map )
+(parse-dwarf-xml "resources/data/region1-legends.xml" :historical_figures historical-figures->map )
 
 
