@@ -8,6 +8,11 @@
 (require '[clojure.walk :as w])
 
 
+(defn skills->map [e]
+  (let [z (xml-zip e)]
+   {:skill    (xml1-> z :skill text)
+    :total_ip (xml1-> z :total_ip text)}))
+
 (defn sites->map [e]
   (let [z (xml-zip e)]
       {:id      (xml1-> z :id text)
@@ -15,8 +20,8 @@
        :coords  (xml1-> z :coords text)
        }))
 
-(defn regions->map [x]
-  (let [z (xml-zip x)]
+(defn regions->map [e]
+  (let [z (xml-zip e)]
     {:id   (xml1-> z :id text)
      :name (xml1-> z :name text)
      :type (xml1-> z :type text)
@@ -31,16 +36,21 @@
 
 (defn historical-figures->map [e]
   (let [z (xml-zip e)]
+
     {:id              (xml1-> z :id text)
      :race            (xml1-> z :race text)
      :name            (xml1-> z :name text)
      :caste           (xml1-> z :caste text)
      :appeared        (xml1-> z :appeared text)
      :birth_year      (xml1-> z :birth_year text)
-     :birth_seconds   (xml1-> z :birth_seconds text)
+     :birth_seconds   (xml1-> z :birth_seconds72 text)
      :death_year      (xml1-> z :death_year text)
-     :death_seconds   (xml1-> z :death_seconds text)
+     :death_seconds   (xml1-> z :death_seconds72 text)
      :associated_type (xml1-> z :associated_type text)
+     :hf_skills       (doall (->> e
+                                  :content
+                                  (filter #(= :hf_skill (:tag %)))
+                                  (map skills->map)))
      }))
 
 
@@ -70,10 +80,22 @@
            :content
            (map coll)))))
 
-(parse-dwarf-xml "resources/data/region1-legends.xml" :regions regions->map)
-(parse-dwarf-xml "resources/data/region1-legends.xml" :sites sites->map )
+(parse-dwarf-xml "resources/data/region2-legends.xml" :regions regions->map)
+(parse-dwarf-xml "resources/data/region2-legends.xml" :sites sites->map )
 (parse-dwarf-xml "resources/data/region1-legends.xml" :underground_regions underground-regions->map)
+(parse-dwarf-xml "resources/data/region1-legends.xml" :historical_figures historical-figures->map )
 
+
+
+
+(defn parse-list-of-skills
+  "this function parses a list of skills and maps it to
+  collection coll"
+  [rdr coll]
+  (doall
+   (->> rdr
+        :content
+        (map coll))))
 
 
 ;(def parsed-site-data (transient []))
