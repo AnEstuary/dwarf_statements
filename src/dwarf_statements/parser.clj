@@ -7,11 +7,19 @@
 
 (require '[clojure.walk :as w])
 
+; This section is where we list our different map types for parsing. XML sections have dramatically different
+; structures and properties, which require different maps. Some maps require the nested map grabber, which grab nested
+; elements from different tags inside the map currently being looked at.
 
 (defn skills->map [e]
   (let [z (xml-zip e)]
    {:skill    (xml1-> z :skill text)
     :total_ip (xml1-> z :total_ip text)}))
+
+(defn links->map [e]
+  (let [z (xml-zip e)]
+    {:link_type (xml1-> z :link_type text)
+     :entity_id (xml1-> z :entity_id text)}))
 
 (defn sites->map [e]
   (let [z (xml-zip e)]
@@ -47,28 +55,29 @@
      :death_year      (xml1-> z :death_year text)
      :death_seconds   (xml1-> z :death_seconds72 text)
      :associated_type (xml1-> z :associated_type text)
-     :hf_skills       (doall (->> e
-                                  :content
-                                  (filter #(= :hf_skill (:tag %)))
-                                  (map skills->map)))
+     :hf_skills       (nested-list-grabber e :hf_skill skills->map)
+     :entity_links    (nested-list-grabber e :entity_link  links->map)
      }))
 
 
 
-;(with-open [rdr(clojure.java.io/reader "resources/data/region1-legends.xml")]
-;  (doall
-;    (->> rdr
-;      parse
-;      :content
-;      (filter #(= :sites (:tag %)))
-;      first
-;      :content
-;      (map sites->map))))
+
+; this section is where we handle functions for lazy sequences.
+
+(defn nested-list-grabber
+  "This function grabs the nested list tag
+   from element and maps them to according to fn coll."
+  [element tag coll]
+    (doall (->> element
+                :content
+                (filter #(= tag (:tag %)))
+                (map coll))))
+
 
 (defn parse-dwarf-xml
   "This function takes the address of the file
   you wish to parse, finds the tag of the items
-  you wish to collect, and maps the items to collection coll"
+  you wish to collect, and maps the items according to fn coll"
   [address tag coll]
   (with-open [rdr(clojure.java.io/reader address)]
     (doall
@@ -80,31 +89,11 @@
            :content
            (map coll)))))
 
+; This is where we call our parsing function and watch magic happen
+
 (parse-dwarf-xml "resources/data/region2-legends.xml" :regions regions->map)
 (parse-dwarf-xml "resources/data/region2-legends.xml" :sites sites->map )
-(parse-dwarf-xml "resources/data/region1-legends.xml" :underground_regions underground-regions->map)
-(parse-dwarf-xml "resources/data/region1-legends.xml" :historical_figures historical-figures->map )
+(parse-dwarf-xml "resources/data/region2-legends.xml" :underground_regions underground-regions->map)
+(parse-dwarf-xml "resources/data/region2-legends.xml" :historical_figures historical-figures->map )
 
 
-
-
-(defn parse-list-of-skills
-  "this function parses a list of skills and maps it to
-  collection coll"
-  [rdr coll]
-  (doall
-   (->> rdr
-        :content
-        (map coll))))
-
-
-;(def parsed-site-data (transient []))
-;(xml-dwarf-site-parser parsed-site-data "resources/data/region2-legends.xml")
-
-
-;(for[i (range (count parsed-site-data))]
-;    (parsed-site-data i))
-
-
-;(let [xml-file (clojure.java.io/reader "resources/data/region2-legends.xml")]
-;  (type(xml-seq (parse xml-file))))
