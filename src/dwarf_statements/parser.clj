@@ -107,86 +107,86 @@
      }))
 
 (defn historical-event-type-cases
-  "this fn finds a different list
-  of keys and values to look for depending
+  "this fn returns a different list
+  of keys and values depending
   on the event-type in the zip being looked at in h-events"
   [event-type z e]
   (case event-type
     "change hf state"
-      {:hfid              (xml1-> z :hfid text)
-       :state             (xml1-> z :state text)
-       :site_id           (xml1-> z :site_id text)
-       :subregion_id      (xml1-> z :subregion_id text)
-       :feature_layer_id  (xml1-> z :feature_layer_id text)
-       :coords            (xml1-> z :coords text)}
+      {:hfid                (xml1-> z :hfid text)
+       :state               (xml1-> z :state text)
+       :site_id             (xml1-> z :site_id text)
+       :subregion_id        (xml1-> z :subregion_id text)
+       :feature_layer_id    (xml1-> z :feature_layer_id text)
+       :coords              (xml1-> z :coords text)}
     "add hf entity link"
-      {:civ_id            (xml1-> z :civ_id text)}
+      {:civ_id              (xml1-> z :civ_id text)}
     "created site"
-      {:civ_id            (xml1-> z :civ_id text)
-       :site_civ_id       (xml1-> z :site_civ_id text)
-       :site_id           (xml1-> z :site_id text)}
+      {:civ_id              (xml1-> z :civ_id text)
+       :site_civ_id         (xml1-> z :site_civ_id text)
+       :site_id             (xml1-> z :site_id text)}
     "add hf hf link"
-      {:hfid              (xml1-> z :hfid text)
-       :hfid_target       (xml1-> z :hfid_target text)}
+      {:hfid                (xml1-> z :hfid text)
+       :hfid_target         (xml1-> z :hfid_target text)}
     "created structure"
-      {:civ_id            (xml1-> z :civ_id text)
-       :site_civ_id       (xml1-> z :site_civ_id text)
-       :site_id           (xml1-> z :site_id text)
-       :structure_id      (xml1-> z :structure_id text)}
+      {:civ_id              (xml1-> z :civ_id text)
+       :site_civ_id         (xml1-> z :site_civ_id text)
+       :site_id             (xml1-> z :site_id text)
+       :structure_id        (xml1-> z :structure_id text)}
     "change hf job"
-      {:hfid              (xml1-> z :hfid text)
-       :site_id           (xml1-> z :site_id text)
-       :subregion_id      (xml1-> z :subregion_id text)
-       :feature_layer_id  (xml1-> z :feature_layer_id text)}
+      {:hfid                (xml1-> z :hfid text)
+       :site_id             (xml1-> z :site_id text)
+       :subregion_id        (xml1-> z :subregion_id text)
+       :feature_layer_id    (xml1-> z :feature_layer_id text)}
     "hf travel"
-      {:group_hfid        (xml1-> z :group_hfid text)
-       :site_id           (xml1-> z :site_id text)
-       :subregion_id      (xml1-> z :subregion_id text)
-       :feature_layer_id  (xml1-> z :feature_layer_id text)}
+      {:group_hfid          (xml1-> z :group_hfid text)
+       :site_id             (xml1-> z :site_id text)
+       :subregion_id        (xml1-> z :subregion_id text)
+       :feature_layer_id    (xml1-> z :feature_layer_id text)}
     "hf abducted"
-      {:target_hfid       (xml1-> z :target_hfid text)
-       :snatcher_hfid     (xml1-> z :snatcher_hfid text)
-       :site_id           (xml1-> z :site_id text)
-       :subregion_id      (xml1-> z :subregion_id text)
-       :feature_layer_id  (xml1-> z :feature_layer_id text)}
+      {:target_hfid         (xml1-> z :target_hfid text)
+       :snatcher_hfid       (xml1-> z :snatcher_hfid text)
+       :site_id             (xml1-> z :site_id text)
+       :subregion_id        (xml1-> z :subregion_id text)
+       :feature_layer_id    (xml1-> z :feature_layer_id text)}
     "hf simple battle event"
-      {:subtype           (xml1-> z :subtype text)
-       :group_1_hfid      (xml1-> z :group_1_hfid text)
-       :group_2_hfid      (xml1-> z :group_2_hfid text)
-       :site_id           (xml1-> z :site_id text)
-       :subregion_id      (xml1-> z :subregion_id text)
-       :feature_layer_id  (xml1-> z :feature_layer_id text)}
+      {:subtype             (xml1-> z :subtype text)
+       :group_1_hfid        (xml1-> z :group_1_hfid text)
+       :group_2_hfid        (xml1-> z :group_2_hfid text)
+       :site_id             (xml1-> z :site_id text)
+       :subregion_id        (xml1-> z :subregion_id text)
+       :feature_layer_id    (xml1-> z :feature_layer_id text)}
     "hf died"
-      {:hfid              (xml1-> z :hfid text)
-       :slayer_hfid       (xml1-> z :slayer_hfid text)
-       :slayer_race       (xml1-> z :slayer_race text)
-       :slayer_caste      (xml1-> z :slayer_caste text)
-       :slayer_item_id    (xml1-> z :slayer_item_id text)
+      {:hfid                (xml1-> z :hfid text)
+       :slayer_hfid         (xml1-> z :slayer_hfid text)
+       :slayer_race         (xml1-> z :slayer_race text)
+       :slayer_caste        (xml1-> z :slayer_caste text)
+       :slayer_item_id      (xml1-> z :slayer_item_id text)
        :slayer_shooter_item_id (xml1-> z :slayer_shooter_item_id text)
-       :site_id           (xml1-> z :site_id text)
-       :subregion_id      (xml1-> z :subregion_id text)
-       :feature_layer_id  (xml1-> z :feature_layer_id text)
-       :cause             (xml1-> z :cause text)}
+       :site_id             (xml1-> z :site_id text)
+       :subregion_id        (xml1-> z :subregion_id text)
+       :feature_layer_id    (xml1-> z :feature_layer_id text)
+       :cause               (xml1-> z :cause text)}
     "changed creature type"
-      {:changee_hfid     (xml1-> z :changee_hfid text)
-       :changer_hfid     (xml1-> z :changer_hfid text)
-       :old_race         (xml1-> z :old_race text)
-       :old_caste        (xml1-> z :old_caste text)
-       :new_race         (xml1-> z :new_race text)
-       :new_caste        (xml1-> z :new_caste text)}
+      {:changee_hfid        (xml1-> z :changee_hfid text)
+       :changer_hfid        (xml1-> z :changer_hfid text)
+       :old_race            (xml1-> z :old_race text)
+       :old_caste           (xml1-> z :old_caste text)
+       :new_race            (xml1-> z :new_race text)
+       :new_caste           (xml1-> z :new_caste text)}
     "creature devoured"
-      {:site_id           (xml1-> z :site_id text)
-       :subregion_id      (xml1-> z :subregion_id text)
-       :feature_layer_id  (xml1-> z :feature_layer_id text)}
+      {:site_id             (xml1-> z :site_id text)
+       :subregion_id        (xml1-> z :subregion_id text)
+       :feature_layer_id    (xml1-> z :feature_layer_id text)}
     "hf gains secret goal"
-      {:hfid              (xml1-> z :hfid text)
-       :secret_goal       (xml1-> z :secret_goal text)}
+      {:hfid                (xml1-> z :hfid text)
+       :secret_goal         (xml1-> z :secret_goal text)}
     "field battle"
-      {:attacker_civ_id   (xml1-> z :attacker_civ_id text)
-       :defender_civ_id   (xml1-> z :defender_civ_id text)
-       :subregion_id      (xml1-> z :subregion_id text)
-       :feature_layer_id  (xml1-> z :feature_layer_id text)
-       :coords            (xml1-> z :coords text)
+      {:attacker_civ_id     (xml1-> z :attacker_civ_id text)
+       :defender_civ_id     (xml1-> z :defender_civ_id text)
+       :subregion_id        (xml1-> z :subregion_id text)
+       :feature_layer_id    (xml1-> z :feature_layer_id text)
+       :coords              (xml1-> z :coords text)
        :attacker_general_id (xml1-> z :attacker_general_id text)
        :defender_general_id (xml1-> z :defender_general_id text)}
     "hf wounded"
@@ -200,7 +200,7 @@
        :identity_id         (xml1-> z :identity_id text)
        :target_enid         (xml1-> z :target_enid text)}
     "remove hf entity link"
-      {:civ_id            (xml1-> z :civ_id text)}
+      {:civ_id              (xml1-> z :civ_id text)}
     "hf new pet"
       {:group_hfid          (xml1-> z :group_hfid text)
        :site_id             (xml1-> z :site_id text)
@@ -216,83 +216,82 @@
        :hist_figure_id      (xml1-> z :hist_figure_id text)
        :site_id             (xml1-> z :site_id text)}
     "attacked site"
-      {:attacker_civ_id   (xml1-> z :attacker_civ_id text)
-       :defender_civ_id   (xml1-> z :defender_civ_id text)
-       :site_civ_id       (xml1-> z :site_civ_id text)
-       :subregion_id      (xml1-> z :subregion_id text)
-       :feature_layer_id  (xml1-> z :feature_layer_id text)
-       :coords            (xml1-> z :coords text)
+      {:attacker_civ_id     (xml1-> z :attacker_civ_id text)
+       :defender_civ_id     (xml1-> z :defender_civ_id text)
+       :site_civ_id         (xml1-> z :site_civ_id text)
+       :site_id             (xml1-> z :site_id text)
+       :feature_layer_id    (xml1-> z :feature_layer_id text)
        :attacker_general_id (xml1-> z :attacker_general_id text)
        :defender_general_id (xml1-> z :defender_general_id text)}
     "plundered site"
-      {:attacker_civ_id   (xml1-> z :attacker_civ_id text)
-       :defender_civ_id   (xml1-> z :defender_civ_id text)
-       :site_civ_id       (xml1-> z :site_civ_id text)
-       :site_id           (xml1-> z :site_id text)}
+      {:attacker_civ_id     (xml1-> z :attacker_civ_id text)
+       :defender_civ_id     (xml1-> z :defender_civ_id text)
+       :site_civ_id         (xml1-> z :site_civ_id text)
+       :site_id             (xml1-> z :site_id text)}
     "hf reunion"
-      {:group_1_hfid      (xml1-> z :group_1_hfid text)
-       :group_2_hfids     (nested-list-grabber e :group_2_hfid group_2_hfid->map)
-       :site_id           (xml1-> z :site_id text)
-       :subregion_id      (xml1-> z :subregion_id text)
-       :feature_layer_id  (xml1-> z :feature_layer_id text)}
+      {:group_1_hfid        (xml1-> z :group_1_hfid text)
+       :group_2_hfids       (nested-list-grabber e :group_2_hfid group_2_hfid->map)
+       :site_id             (xml1-> z :site_id text)
+       :subregion_id        (xml1-> z :subregion_id text)
+       :feature_layer_id    (xml1-> z :feature_layer_id text)}
     "change hf body state"
-      {:hfid              (xml1-> z :hfid text)
-       :body_state        (xml1-> z :body_state text)
-       :site_id           (xml1-> z :site_id text)
-       :building_id       (xml1-> z :building_id text)
-       :subregion_id      (xml1-> z :subregion_id text)
-       :feature_layer_id  (xml1-> z :feature_layer_id text)
-       :coords            (xml1-> z :coords text)}
+      {:hfid                (xml1-> z :hfid text)
+       :body_state          (xml1-> z :body_state text)
+       :site_id             (xml1-> z :site_id text)
+       :building_id         (xml1-> z :building_id text)
+       :subregion_id        (xml1-> z :subregion_id text)
+       :feature_layer_id    (xml1-> z :feature_layer_id text)
+       :coords              (xml1-> z :coords text)}
     "entity created"
-      {:entity_id         (xml1-> z :entity_id text)
-       :site_id           (xml1-> z :site_id text)
-       :structure_id      (xml1-> z :structure_id text)}
+      {:entity_id           (xml1-> z :entity_id text)
+       :site_id             (xml1-> z :site_id text)
+       :structure_id        (xml1-> z :structure_id text)}
     "add hf site link"
-      {:site_id           (xml1-> z :site_id text)}
+      {:site_id             (xml1-> z :site_id text)}
     "entity relocate"
-      {:entity_id         (xml1-> z :entity_id text)
-       :site_id           (xml1-> z :site_id text)
-       :structure_id      (xml1-> z :structure_id text)}
+      {:entity_id           (xml1-> z :entity_id text)
+       :site_id             (xml1-> z :site_id text)
+       :structure_id        (xml1-> z :structure_id text)}
     "entity primary criminals"
-      {:entity_id         (xml1-> z :entity_id text)
-       :site_id           (xml1-> z :site_id text)
-       :structure_id      (xml1-> z :structure_id text)}
+      {:entity_id           (xml1-> z :entity_id text)
+       :site_id             (xml1-> z :site_id text)
+       :structure_id        (xml1-> z :structure_id text)}
     "hf profaned structure"
-      {:hist_fig_id       (xml1-> z :hist_fig_id text)
-       :site_id           (xml1-> z :site_id text)
-       :structure_id      (xml1-> z :structure_id text)}
+      {:hist_fig_id         (xml1-> z :hist_fig_id text)
+       :site_id             (xml1-> z :site_id text)
+       :structure_id        (xml1-> z :structure_id text)}
     "hf does interaction"
-      {:doer_hfid         (xml1-> z :doer_hfid text)
-       :target_hfid       (xml1-> z :target_hfid text)
-       :interaction       (xml1-> z :interaction text)}
+      {:doer_hfid           (xml1-> z :doer_hfid text)
+       :target_hfid         (xml1-> z :target_hfid text)
+       :interaction         (xml1-> z :interaction text)}
     "remove hf site link"
-      {:site_id           (xml1-> z :site_id text)}
+      {:site_id             (xml1-> z :site_id text)}
     "created world construction"
-      {:civ_id          (xml1-> z :civ_id text)
-       :site_civ_id     (xml1-> z :site_civ_id text)
-       :wcid            (xml1-> z :wcid text)
-       :master_wcid     (xml1-> z :master_wcid text)}
+      {:civ_id              (xml1-> z :civ_id text)
+       :site_civ_id         (xml1-> z :site_civ_id text)
+       :wcid                (xml1-> z :wcid text)
+       :master_wcid         (xml1-> z :master_wcid text)}
     "artifact possessed"
-      {:artifact_id     (xml1-> z :artifact_id  text)
-       :unit_id         (xml1-> z :unit_id text)
-       :hist_figure_id  (xml1-> z :hist_figure_id text)
-       :site_id         (xml1-> z :site_id text)}
+      {:artifact_id         (xml1-> z :artifact_id  text)
+       :unit_id             (xml1-> z :unit_id text)
+       :hist_figure_id      (xml1-> z :hist_figure_id text)
+       :site_id             (xml1-> z :site_id text)}
     "hf learns secret"
-      {:student_hfid    (xml1-> z :student_hfid text)
-       :teacher_hfid    (xml1-> z :teacher_hfid text)
-       :artifact_id     (xml1-> z :artifact_id text)
-       :interaction     (xml1-> z :interaction text)}
+      {:student_hfid        (xml1-> z :student_hfid text)
+       :teacher_hfid        (xml1-> z :teacher_hfid text)
+       :artifact_id         (xml1-> z :artifact_id text)
+       :interaction         (xml1-> z :interaction text)}
     "peace accepted"
-      {:site_id         (xml1-> z :site_id text)}
+      {:site_id             (xml1-> z :site_id text)}
     "razed structure"
-      {:civ_id          (xml1-> z :civ_id text)
-       :site_id         (xml1-> z :site_id text)
-       :structure_id    (xml1-> z :structure_id text)}
+      {:civ_id              (xml1-> z :civ_id text)
+       :site_id             (xml1-> z :site_id text)
+       :structure_id        (xml1-> z :structure_id text)}
     "body abused"
-      {:site_id           (xml1-> z :site_id text)
-       :subregion_id      (xml1-> z :subregion_id text)
-       :feature_layer_id  (xml1-> z :feature_layer_id text)
-       :coords            (xml1-> z :coords text)}
+      {:site_id             (xml1-> z :site_id text)
+       :subregion_id        (xml1-> z :subregion_id text)
+       :feature_layer_id    (xml1-> z :feature_layer_id text)
+       :coords              (xml1-> z :coords text)}
     "hf confronted"
       {:hfid                (xml1-> z :hfid text)
        :situation           (xml1-> z :situation text)}
@@ -337,7 +336,29 @@
 (parse-dwarf-xml "resources/data/region2-legends.xml" :regions regions->map)
 (parse-dwarf-xml "resources/data/region2-legends.xml" :sites sites->map )
 (parse-dwarf-xml "resources/data/region2-legends.xml" :underground_regions underground-regions->map)
-(parse-dwarf-xml "resources/data/region2-legends.xml" :historical_figures historical-figures->map )
-(parse-dwarf-xml "resources/data/region1-legends.xml" :historical_events historical-events->map )
+(def historical-figures (parse-dwarf-xml "resources/data/region1-legends.xml" :historical_figures historical-figures->map ))
+(def historical-events (parse-dwarf-xml "resources/data/region1-legends.xml" :historical_events historical-events->map))
+
+;for the sake of example lets print out a list of deaths
+;over the course of the loading of the game
+
+
+(def list-of-figures-by-id (group-by :id historical-figures))
+(def list-of-deaths (get (group-by :type historical-events) "hf died"))
+
+(type list-of-figures-by-id)
+
+; hilariously convoluted function for printing
+; the murders of various historical figures
+
+(for  [x list-of-deaths]
+  (println
+   (for [ n (get list-of-figures-by-id (:hfid x))]
+     (:name n))
+   "was" (:cause x) "by a" (:slayer_race x) "named"
+   (for [ n (get list-of-figures-by-id (:slayer_hfid x))]
+     (:name n))"in year" (:year x)))
+
+
 
 
