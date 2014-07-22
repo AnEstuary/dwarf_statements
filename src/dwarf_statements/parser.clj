@@ -357,7 +357,8 @@
      (:name n))
    "was" (:cause x) "by a" (:slayer_race x) "named"
    (for [ n (get list-of-figures-by-id (:slayer_hfid x))]
-     (:name n))"in year" (:year x)))
+     (:name n))
+   "in year" (:year x)))
 
 
 
