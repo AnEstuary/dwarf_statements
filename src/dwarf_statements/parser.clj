@@ -107,9 +107,9 @@
      }))
 
 (defn historical-event-type-cases
-  "this fn returns a different list
-  of keys and values depending
-  on the event-type in the zip being looked at in h-events"
+  "this fn returns a map of different
+  properties to look for when were parsing
+  historical events"
   [event-type z e]
   (case event-type
     "change hf state"
@@ -311,13 +311,13 @@
        :site_civ_id         (xml1-> z :site_civ_id text)
        :site_id             (xml1-> z :site_id text)}
     "new site leader"
-    {:attacker_civ_id       (xml1-> z :attacker_civ_id text)
-     :new_site_civ_id       (xml1-> z :new_site_civ_id text)
-     :defender_civ_id       (xml1-> z :defender_civ_id text)
-     :site_civ_id           (xml1-> z :site_civ_id text)
-     :site_id               (xml1-> z :site_civ_id text)
-     :new_leader_hfid       (xml1-> z :new_leader_hfid text)}
-    {:no_additional_information "nothing else here"}))
+      {:attacker_civ_id       (xml1-> z :attacker_civ_id text)
+       :new_site_civ_id       (xml1-> z :new_site_civ_id text)
+       :defender_civ_id       (xml1-> z :defender_civ_id text)
+       :site_civ_id           (xml1-> z :site_civ_id text)
+       :site_id               (xml1-> z :site_civ_id text)
+       :new_leader_hfid       (xml1-> z :new_leader_hfid text)}
+      {:no_additional_information "nothing else here"}))
 
 (defn historical-events->map [e]
   (let [z (xml-zip e)]
@@ -331,7 +331,7 @@
 
 
 
-; This is where we call our parsing function and watch magic happen
+; formal definitions for our parsed xml data
 
 (parse-dwarf-xml "resources/data/region2-legends.xml" :regions regions->map)
 (parse-dwarf-xml "resources/data/region2-legends.xml" :sites sites->map )
@@ -339,26 +339,36 @@
 (def historical-figures (parse-dwarf-xml "resources/data/region1-legends.xml" :historical_figures historical-figures->map ))
 (def historical-events (parse-dwarf-xml "resources/data/region1-legends.xml" :historical_events historical-events->map))
 
-;for the sake of example lets print out a list of deaths
-;over the course of the loading of the game
 
+; groupings for our parsed data
 
-(def list-of-figures-by-id (group-by :id historical-figures))
+(def map-of-figures-by-id (group-by :id historical-figures))
 (def list-of-deaths (get (group-by :type historical-events) "hf died"))
 
-(type list-of-figures-by-id)
 
-; hilariously convoluted function for printing
-; the murders of various historical figures
+; functions for getting properties of different lists
+
+(defn get-property-of-historical-figure
+  "this function finds the historical figure
+  by id and returns the requested property
+  as a string"
+  [property id]
+   (property
+    (first
+     (get map-of-figures-by-id id))))
+
+
+;list of deaths
 
 (for  [x list-of-deaths]
-  (println
-   (for [ n (get list-of-figures-by-id (:hfid x))]
-     (:name n))
-   "was" (:cause x) "by a" (:slayer_race x) "named"
-   (for [ n (get list-of-figures-by-id (:slayer_hfid x))]
-     (:name n))
-   "in year" (:year x)))
+  (if (false? (= (:cause x) "old age"))
+   (println
+    (get-property-of-historical-figure :name (:hfid x))
+     "was" (:cause x) "by a" (:slayer_race x) "named"
+     (get-property-of-historical-figure :name (:slayer_hfid x))
+     "in year" (:year x))
+   (println
+     (get-property-of-historical-figure :name (:hfid x)) "died of" (:cause x) "in year" (:year x))))
 
 
 
