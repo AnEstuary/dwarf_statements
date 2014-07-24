@@ -46,7 +46,7 @@
    {:skill    (xml1-> z :skill text)
     :total_ip (xml1-> z :total_ip text)}))
 
-(defn links->map [e]
+(defn entity-links->map [e]
   (let [z (xml-zip e)]
     {:link_type (xml1-> z :link_type text)
      :entity_id (xml1-> z :entity_id text)}))
@@ -100,10 +100,13 @@
      :death_seconds   (xml1-> z :death_seconds72 text)
      :associated_type (xml1-> z :associated_type text)
      :hf_skills       (nested-list-grabber e :hf_skill skills->map)
-     :entity_links    (nested-list-grabber e :entity_link  links->map)
+     :entity_links    (nested-list-grabber e :entity_link  entity-links->map)
      :site_links      (nested-list-grabber e :site_link site-links->map)
      :spheres         (nested-list-grabber e :sphere spheres->map)
      :ent_pop_ids     (xml1-> z :ent_pop_id text)
+     :deity?          (if (nil? (xml1-> z :deity))
+                        false
+                        true)
      }))
 
 (defn historical-event-type-cases
@@ -336,8 +339,8 @@
 (parse-dwarf-xml "resources/data/region2-legends.xml" :regions regions->map)
 (parse-dwarf-xml "resources/data/region2-legends.xml" :sites sites->map )
 (parse-dwarf-xml "resources/data/region2-legends.xml" :underground_regions underground-regions->map)
-(def historical-figures (parse-dwarf-xml "resources/data/region1-legends.xml" :historical_figures historical-figures->map ))
-(def historical-events (parse-dwarf-xml "resources/data/region1-legends.xml" :historical_events historical-events->map))
+(def historical-figures (vec (parse-dwarf-xml "resources/data/region2-legends.xml" :historical_figures historical-figures->map )))
+(def historical-events (parse-dwarf-xml "resources/data/region2-legends.xml" :historical_events historical-events->map))
 
 
 ; groupings for our parsed data
@@ -370,6 +373,18 @@
    (println
      (get-property-of-historical-figure :name (:hfid x)) "died of" (:cause x) "in year" (:year x))))
 
+;list of people by age
+
+(for [hf historical-figures]
+  (if (and (not (= (:death_year hf) "-1")) (not (= (:deity? hf) true)))
+    (println (:name hf) "lived for" (- (Integer. (:death_year hf)) (Integer. (:birth_year hf))) "years and died in year" (:death_year hf))
+    (println (:name hf) "is still alive and is"
+             (- 124 (Integer. (:birth_year hf))) "years old")))
+
+
+
+(for [hf historical-figures]
+  (println (:name hf) (:deity? hf)))
 
 
 
