@@ -385,7 +385,13 @@
     (get entities-by-id id))))
 
 
-(get-property-of-entities :name "14")
+
+;************************************************
+;The following is code for establishing relationships
+;and finding information about different things
+;in the world.
+;************************************************
+
 
 ;list of historical-figures and their associated entities
 
@@ -394,6 +400,8 @@
     (for [ent (:entity_links hf)]
       (println (:name hf) "is the" (:link_type ent) "of" (get-property-of-entities :name (:entity_id ent))))))
 
+
+;list of historical figures and their relationships with other historical figures
 
 (for [hf historical-figures]
   (if (not (= (:deity hf) true))
