@@ -333,9 +333,15 @@
     ))
 
 
+(defn entities->map [e]
+  (let [z (xml-zip e)]
+    {:id (xml1-> z :id text)
+     :name (xml1-> z :id text)
+     }))
+
 
 ; formal definitions for our parsed xml data
-
+(def entities (parse-dwarf-xml "resources/data/region2-legends.xml" :entities entities->map))
 (parse-dwarf-xml "resources/data/region2-legends.xml" :regions regions->map)
 (parse-dwarf-xml "resources/data/region2-legends.xml" :sites sites->map )
 (parse-dwarf-xml "resources/data/region2-legends.xml" :underground_regions underground-regions->map)
@@ -345,21 +351,40 @@
 
 ; groupings for our parsed data
 
+(def entities-by-id (group-by :id entities))
 (def map-of-figures-by-id (group-by :id historical-figures))
 (def list-of-deaths (get (group-by :type historical-events) "hf died"))
+
+
 
 
 ; functions for getting properties of different lists
 
 (defn get-property-of-historical-figure
   "this function finds the historical figure
-  by id and returns the requested property
+  by id and returns the requested key
   as a string"
   [property id]
    (property
     (first
      (get map-of-figures-by-id id))))
 
+(defn get-property-of-entities
+  "this function gets the property of entities
+  by id and returns the requested key
+  as a string"
+  [property id]
+  (property
+   (first
+    (get map-of-figures-by-id id))))
+
+
+;list of historical-figures and their associated entities
+
+(for [hf historical-figures]
+  (if (not (= (:deity? hf) true))
+    (for [ent (:entity_links hf)]
+      (println (:name hf) "is the" (:link_type ent) "of" (get-property-of-entities :name (:entity_id ent))))))
 
 ;list of deaths
 
