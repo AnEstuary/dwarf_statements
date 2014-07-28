@@ -51,6 +51,11 @@
     {:link_type (xml1-> z :link_type text)
      :entity_id (xml1-> z :entity_id text)}))
 
+(defn hf-links->map [e]
+  (let [z (xml-zip e)]
+    {:link_type (xml1-> z :link_type text)
+     :hfid      (xml1-> z :hfid text)}))
+
 (defn sites->map [e]
   (let [z (xml-zip e)]
       {:id      (xml1-> z :id text)
@@ -100,6 +105,7 @@
      :death_seconds   (xml1-> z :death_seconds72 text)
      :associated_type (xml1-> z :associated_type text)
      :hf_skills       (nested-list-grabber e :hf_skill skills->map)
+     :hf_links        (nested-list-grabber e :hf_link  hf-links->map)
      :entity_links    (nested-list-grabber e :entity_link  entity-links->map)
      :site_links      (nested-list-grabber e :site_link site-links->map)
      :spheres         (nested-list-grabber e :sphere spheres->map)
@@ -387,6 +393,12 @@
   (if (not (= (:deity? hf) true))
     (for [ent (:entity_links hf)]
       (println (:name hf) "is the" (:link_type ent) "of" (get-property-of-entities :name (:entity_id ent))))))
+
+
+(for [hf historical-figures]
+  (if (not (= (:deity hf) true))
+    (for[link (:hf_links hf)]
+      (println (:name hf) "has a" (:link_type link) "named" (get-property-of-historical-figure :name (:hfid link))))))
 
 ;list of deaths
 
