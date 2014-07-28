@@ -376,7 +376,7 @@
   [property id]
   (property
    (first
-    (get map-of-figures-by-id id))))
+    (get entities-by-id id))))
 
 
 ;list of historical-figures and their associated entities
