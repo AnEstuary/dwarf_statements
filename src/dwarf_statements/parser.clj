@@ -336,7 +336,7 @@
 (defn entities->map [e]
   (let [z (xml-zip e)]
     {:id (xml1-> z :id text)
-     :name (xml1-> z :id text)
+     :name (xml1-> z :name text)
      }))
 
 
@@ -378,6 +378,8 @@
    (first
     (get entities-by-id id))))
 
+
+(get-property-of-entities :name "14")
 
 ;list of historical-figures and their associated entities
 
