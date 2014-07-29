@@ -90,7 +90,6 @@
     {:group_2_hfid (xml1-> z text)}))
 
 
-
 (defn historical-figures->map [e]
   (let [z (xml-zip e)]
 
@@ -346,7 +345,12 @@
      }))
 
 
-; formal definitions for our parsed xml data
+
+
+; formal definitions for parsed xml
+; data in the form of lazy sequences
+
+
 (def entities (parse-dwarf-xml "resources/data/region2-legends.xml" :entities entities->map))
 (parse-dwarf-xml "resources/data/region2-legends.xml" :regions regions->map)
 (parse-dwarf-xml "resources/data/region2-legends.xml" :sites sites->map )
@@ -355,16 +359,17 @@
 (def historical-events (parse-dwarf-xml "resources/data/region2-legends.xml" :historical_events historical-events->map))
 
 
-; groupings for our parsed data
 
-(def entities-by-id (group-by :id entities))
-(def map-of-figures-by-id (group-by :id historical-figures))
+; groupings for event types
+
 (def list-of-deaths (get (group-by :type historical-events) "hf died"))
 
 
-
-
 ; functions for getting properties of different lists
+
+
+(def entities-by-id (group-by :id entities))
+(def map-of-figures-by-id (group-by :id historical-figures))
 
 (defn get-property-of-historical-figure
   "this function finds the historical figure
@@ -387,9 +392,9 @@
 
 
 ;************************************************
-;The following is code for establishing relationships
-;and finding information about different things
-;in the world.
+; The following is code for establishing relationships
+; and finding information about different things
+; in the world.
 ;************************************************
 
 
@@ -403,10 +408,12 @@
 
 ;list of historical figures and their relationships with other historical figures
 
+
 (for [hf historical-figures]
   (if (and (not (= (:deity hf) true)) (not (empty? (:hf_links hf))))
     (for[link (:hf_links hf)]
       (println (:name hf) "has a" (:link_type link) "named" (get-property-of-historical-figure :name (:hfid link))))))
+
 
 ;list of deaths
 
@@ -427,11 +434,6 @@
     (println (:name hf) "lived for" (- (Integer. (:death_year hf)) (Integer. (:birth_year hf))) "years and died in year" (:death_year hf))
     (println (:name hf) "is still alive and is"
              (- 124 (Integer. (:birth_year hf))) "years old")))
-
-
-
-(for [hf historical-figures]
-  (println (:name hf) (:deity? hf)))
 
 
 
