@@ -396,7 +396,7 @@
 ;list of historical-figures and their associated entities
 
 (for [hf historical-figures]
-  (if (not (= (:deity? hf) true))
+  (if (and (not (= (:deity? hf) true))  (not (empty? (:entity_links hf))))
     (for [ent (:entity_links hf)]
       (println (:name hf) "is the" (:link_type ent) "of" (get-property-of-entities :name (:entity_id ent))))))
 
@@ -404,7 +404,7 @@
 ;list of historical figures and their relationships with other historical figures
 
 (for [hf historical-figures]
-  (if (not (= (:deity hf) true))
+  (if (and (not (= (:deity hf) true)) (not (empty? (:hf_links hf))))
     (for[link (:hf_links hf)]
       (println (:name hf) "has a" (:link_type link) "named" (get-property-of-historical-figure :name (:hfid link))))))
 
